@@ -53,47 +53,55 @@ function preload() {
   }
 }
 
+var savedPattern = [];
+var isRecording = false;
+var recStartTime = 0;
+
+function toggleRecord() {
+    if (isRecording) {
+    } else {
+        savedPattern = [];
+        recStartTime = Date.now();
+    }
+    isRecording = !isRecording;
+}
+
+function playbackPattern() {
+    for(var i in savedPattern) {
+        instruments[savedPattern[i].instr].play(savedPattern[i].time);
+    }
+}
+
 function setup() {
     createCanvas(1430,690);
-  bg = loadImage('assets/drum.jpg');
+    bg = loadImage('assets/drum.jpg');
 
-  // put setup code here
-  // song.setVolume(10);
-  // song.play();
-  //button = createButton("play");
-  //button.mousePressed(togglePlay);
-  //background(51);
+    button1 = createButton('sound');
+    button1.position(10, 200);
 
-  // space out the buttons along the window
-  button1 = createButton('sound');
-  button1.position(10, 200);
+    button2 = createButton('sound');
+    button2.position(360, 160);
 
-  button2 = createButton('sound');
-  button2.position(360, 160);
+    button3 = createButton('sound');
+    button3.position(715, 120);
 
-  button3 = createButton('sound');
-  button3.position(715, 120);
+    button4 = createButton('sound');
+    button4.position(1065, 160);
 
-  button4 = createButton('sound');
-  button4.position(1065, 160);
+    button5 = createButton('sound');
+    button5.position(1380, 200);
 
-  button5 = createButton('sound');
-  button5.position(1380, 200);
+    button6 = createButton('sound');
+    button6.position(185, 440);
 
-  button6 = createButton('sound');
-  button6.position(185, 440);
+    button7 = createButton('sound');
+    button7.position(536, 400);
 
-  button7 = createButton('sound');
-  button7.position(536, 400);
+    button8 = createButton('sound');
+    button8.position(880, 400);
 
-  button8 = createButton('sound');
-  button8.position(880, 400);
-
-  button9 = createButton('sound');
-  button9.position(1220, 440);
-
-  // use the next line to link what happens when u press the button
-  // button.mousePressed();
+    button9 = createButton('sound');
+    button9.position(1220, 440);
 }
 
 function draw() {
@@ -102,10 +110,26 @@ function draw() {
 }
 
 function keyPressed() {
-  var instr = instruments[keyMaps[key.toLowerCase()]];
-  if (instr) {
-      instr.play();
-  }
+    if (key == "R") {
+        toggleRecord();
+    }
+
+    if (key == "P") {
+        playbackPattern();
+    }
+    var instrName = keyMaps[key.toLowerCase()];
+    var instr = instruments[keyMaps[key.toLowerCase()]];
+
+
+    if (instr) {
+        instr.play();
+        if (isRecording) {
+            savedPattern.push({
+                time: (Date.now() - recStartTime)/1000,
+                instr: instrName
+            });
+        }
+    }
 }
 
 function draw() {
