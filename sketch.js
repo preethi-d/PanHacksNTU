@@ -1,10 +1,12 @@
+let bg;
+let y = 0;
+
 function setup() {
   // put setup code here
-  createCanvas(400,400);
+  bg = loadImage('assets/drum.jpg');
+  createCanvas(1430,690);
 }
 
 function draw() {
-  // put drawing code here
-  background('red');
-
+  background(bg);
 }
