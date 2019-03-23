@@ -104,6 +104,28 @@ function setup() {
     button9.position(1220, 440);
 }
 
+function playFromSequence(seq) {
+    var part = new p5.Part();
+
+    for (var item in seq) {
+        var instr = instruments[item];
+        var pattern = seq[item];
+        var phrase = new p5.Phrase(item,
+            callbackMaker(instr), pattern);
+        part.addPhrase(phrase);
+    }
+    part.setBPM(30);
+    part.start();
+    return part;
+}
+
+function callbackMaker(instrument) {
+    return (time, playbackRate) => {
+        instrument.rate(playbackRate)
+        instrument.play(time)
+    }
+}
+
 function draw() {
   // put drawing code here
   background(0);
