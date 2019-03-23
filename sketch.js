@@ -28,31 +28,42 @@ var tinkButton;
 var tink;
 var tomButton;
 var tom;
+var buttonPos = {};
+var buttons = {};
+var instrumentNames = [
+    "hihat", "boom", "clap", "kick", "openhat", "ride", "snare", "tink", "tom"
+];
+var instruments = {};
+var keyMaps = {
+    "d": "hihat",
+    "f": "boom",
+    "g": "clap",
+    "h": "kick",
+    "j": "openhat",
+    "c": "ride",
+    "v": "snare",
+    "b": "tink",
+    "n": "tom"
+}
 
 function preload() {
   soundFormats('mp3', 'wav');
-  snare = loadSound('/sounds/snare.wav');
-  hihat = loadSound('/sounds/hihat.wav');
-  boom = loadSound('/sounds/boom.wav');
-  clap = loadSound('/sounds/clap.wav');
-  kick = loadSound('/sounds/kick.wav');
-  openhat = loadSound('/sounds/openhat.wav');
-  ride = loadSound('/sounds/ride.wav');
-  tink = loadSound('/sounds/tink.wav');
-  tom = loadSound('/sounds/tom.wav');
+  for (var i in instrumentNames) {
+      instruments[instrumentNames[i]] = loadSound("/sounds/" + instrumentNames[i] + ".wav");
+  }
 }
 
 function setup() {
     createCanvas(1430,690);
   bg = loadImage('assets/drum.jpg');
-  
+
   // put setup code here
-  song.setVolume(10);
-  song.play();
+  // song.setVolume(10);
+  // song.play();
   //button = createButton("play");
   //button.mousePressed(togglePlay);
   //background(51);
-  
+
   // space out the buttons along the window
   button1 = createButton('sound');
   button1.position(10, 200);
@@ -91,39 +102,12 @@ function draw() {
 }
 
 function keyPressed() {
-  console.log(key.toLowerCase());
-  switch (key.toLowerCase()) {
-    case "d":
-      hihat.play();
-      break;
-    case "f":
-      boom.play();
-      break;
-    case "g":
-      clap.play();
-      break;
-    case "h":
-      kick.play();
-      break;
-    case "j":
-      openhat.play();
-      break;
-    case "c":
-      ride.play();
-      break;
-    case "v":
-      snare.play();
-      break;
-    case "b":
-      tink.play();
-      break;
-    case "n":
-      tom.play();
-      break;
-
+  var instr = instruments[keyMaps[key.toLowerCase()]];
+  if (instr) {
+      instr.play();
   }
 }
-  
+
 function draw() {
   background(bg);
   // display all the buttons
