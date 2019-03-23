@@ -45,6 +45,13 @@ var keyMaps = {
     "b": "tink",
     "n": "tom"
 }
+var premadeSeq = {
+    seq1: {
+        "hihat": [0, 1, 0, 1],
+        "kick": [1, 0, 0, 1],
+        "snare": [0, 0, 1, 0]
+    }
+}
 
 function preload() {
   soundFormats('mp3', 'wav');
@@ -104,6 +111,31 @@ function setup() {
     button9.position(1220, 440);
 }
 
+function test() {
+    var p = playFromSequence(generateSequence(16));
+    p.setBPM(30);
+    p.start();
+}
+
+function generateSequence(length) {
+    var instrName = instrumentNames;
+    var seq = {
+
+    };
+    for (var i in instrName) {
+        var pattern = [];
+        for (var j = 0; j < length; j++) {
+            pattern.push(0);
+            if (Math.random() < 0.2) {
+                pattern[j] = 1;
+            }
+        }
+
+        seq[instrName[i]] = pattern;
+    }
+    return seq;
+}
+
 function playFromSequence(seq) {
     var part = new p5.Part();
 
@@ -114,8 +146,6 @@ function playFromSequence(seq) {
             callbackMaker(instr), pattern);
         part.addPhrase(phrase);
     }
-    part.setBPM(30);
-    part.start();
     return part;
 }
 
